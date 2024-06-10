@@ -1,0 +1,8 @@
+name: SkinLib
+version: '${project.version}'
+main: fr.supermax_8.skinlib.SkinLib
+api-version: 1.19
+commands:
+  skinlib:
+    permission:
+      - op
