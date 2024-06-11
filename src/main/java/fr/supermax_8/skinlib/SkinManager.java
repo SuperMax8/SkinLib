@@ -1,9 +1,12 @@
 package fr.supermax_8.skinlib;
 
+import lombok.Getter;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SkinManager {
 
+    @Getter
     private static final ConcurrentHashMap<String, Skin> skins = new ConcurrentHashMap<>();
 
 
@@ -13,10 +16,6 @@ public class SkinManager {
 
     public static void removeSkin(String str) {
         skins.remove(str);
-    }
-
-    public static ConcurrentHashMap<String, Skin> getSkins() {
-        return skins;
     }
 
 }

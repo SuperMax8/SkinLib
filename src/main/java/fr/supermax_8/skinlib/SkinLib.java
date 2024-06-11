@@ -1,10 +1,12 @@
 package fr.supermax_8.skinlib;
 
 import fr.supermax_8.skinlib.commands.SkinLibCommand;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SkinLib extends JavaPlugin {
 
+    @Getter
     private static SkinLib instance;
 
     @Override
@@ -16,11 +18,6 @@ public final class SkinLib extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    }
-
-
-    public static SkinLib getInstance() {
-        return instance;
     }
 
 
