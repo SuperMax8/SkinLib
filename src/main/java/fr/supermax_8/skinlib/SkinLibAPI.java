@@ -12,6 +12,7 @@ import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.mineskin.data.Skin;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -30,8 +31,8 @@ public class SkinLibAPI {
     }
 
     public static ItemStack createHead(Skin skin, String displayName, String... lore) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        ItemMeta headMeta = skin.getCloneSkullMeta();
+        ItemStack head = itemFromUrl(skin.data.texture.url);
+        ItemMeta headMeta = head.getItemMeta();
         headMeta.setDisplayName(displayName);
         headMeta.setLore(Arrays.asList(lore));
         head.setItemMeta(headMeta);
@@ -270,7 +271,7 @@ public class SkinLibAPI {
             throw new RuntimeException(e);
         }
         String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl.toString() + "\"}}}";
-        System.out.println(toEncode);
+        /*System.out.println(toEncode);*/
         return new Base64().encodeToString(toEncode.getBytes());
     }
 

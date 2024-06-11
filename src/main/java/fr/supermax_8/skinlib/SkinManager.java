@@ -1,6 +1,7 @@
 package fr.supermax_8.skinlib;
 
 import lombok.Getter;
+import org.mineskin.data.Skin;
 
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -28,7 +28,7 @@ public class SkinLibCommand implements CommandExecutor {
                 case "out":
                     String inputSkin = args[1];
                     System.out.println(inputSkin + ":");
-                    System.out.println(SkinManager.getSkins().get(inputSkin).getUrl());
+                    System.out.println(SkinManager.getSkins().get(inputSkin).data.texture.url);
                     break;
                 case "giveurl":
                     if (!(sender instanceof Player)) {

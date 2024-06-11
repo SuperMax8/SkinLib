@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.mineskin.MineskinClient;
 import org.mineskin.SkinOptions;
+import org.mineskin.data.Skin;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -40,13 +41,13 @@ public class SkinLibConfig {
             }
             try {
                 String name = fileName.replace(".png", "");
-                if (cache.getCache().containsKey(fileName)) {
-                    SkinManager.addSkin(name, new Skin(cache.getCache().get(fileName)));
+                if (cache.getCache().containsKey(name)) {
+                    SkinManager.addSkin(name, cache.getCache().get(fileName));
                     continue;
                 }
                 client.generateUpload(f).thenAccept(skin -> {
-                    cache.getCache().put(fileName, skin.data.texture.url);
-                    SkinManager.addSkin(name, new Skin(skin.data.texture.url));
+                    cache.getCache().put(name, skin);
+                    SkinManager.addSkin(name, skin);
                 });
                 pngCount++;
             } catch (Exception e) {
