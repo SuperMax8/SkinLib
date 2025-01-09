@@ -4,6 +4,8 @@ import fr.supermax_8.skinlib.commands.SkinLibCommand;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.CompletableFuture;
+
 public final class SkinLib extends JavaPlugin {
 
     @Getter
@@ -12,7 +14,7 @@ public final class SkinLib extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        SkinLibConfig.load();
+        CompletableFuture.runAsync(SkinLibConfig::load);
         getCommand("skinlib").setExecutor(new SkinLibCommand());
     }
 

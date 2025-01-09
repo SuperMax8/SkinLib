@@ -1,12 +1,15 @@
 package fr.supermax_8.skinlib.commands;
 
 import fr.supermax_8.skinlib.SkinLibAPI;
+import fr.supermax_8.skinlib.SkinLibConfig;
 import fr.supermax_8.skinlib.SkinManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SkinLibCommand implements CommandExecutor {
 
@@ -51,6 +54,9 @@ public class SkinLibCommand implements CommandExecutor {
                     ItemStack itm = SkinLibAPI.createHead(inputSkinId, inputSkinId);
                     p.getInventory().addItem(itm);
                     p.sendMessage("Give " + inputSkinId + " !");
+                    break;
+                case "reload":
+                    CompletableFuture.runAsync(SkinLibConfig::load);
                     break;
             }
         } catch (Exception e) {

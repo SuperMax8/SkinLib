@@ -1,9 +1,8 @@
 package fr.supermax_8.skinlib;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
+import fr.supermax_8.skinlib.utils.ImageUtils;
 import org.mineskin.MineskinClient;
-import org.mineskin.SkinOptions;
 import org.mineskin.data.Skin;
 
 import java.io.*;
@@ -13,7 +12,7 @@ import java.util.List;
 public class SkinLibConfig {
 
     private static final File skinsDirectory = new File(SkinLib.getInstance().getDataFolder(), "skins");
-    private static SkinCache cache;
+    private static SkinsCache cache;
 
     public static void load() {
         SkinManager.getSkins().clear();
@@ -25,12 +24,13 @@ public class SkinLibConfig {
         }
         File cacheFile = new File(SkinLib.getInstance().getDataFolder(), "cache.json");
         if (cacheFile.exists()) {
-            try (FileReader reader = new FileReader(cacheFile)){
-                cache = new Gson().fromJson(reader, SkinCache.class);
+            try (FileReader reader = new FileReader(cacheFile)) {
+                SkinLib.log("Loading skin cache...");
+                cache = new Gson().fromJson(reader, SkinsCache.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else cache = new SkinCache();
+        } else cache = new SkinsCache();
 
         MineskinClient client = new MineskinClient("MyUserAgent");
         for (File f : getFilesRecursivly(skinsDirectory)) {
@@ -40,26 +40,28 @@ public class SkinLibConfig {
                 continue;
             }
             try {
+                String hash = ImageUtils.generateImageHash(f);
                 String name = fileName.replace(".png", "");
-                if (cache.getCache().containsKey(name)) {
-                    SkinManager.addSkin(name, cache.getCache().get(fileName));
-                    continue;
-                }
-                client.generateUpload(f).thenAccept(skin -> {
-                    cache.getCache().put(name, skin);
+                if (cache.getCache().containsKey(name) && cache.getCache().get(name).imgHash().equals(hash)) {
+                    SkinManager.addSkin(name, cache.getCache().get(name).skin());
+                } else {
+                    Skin skin = client.generateUpload(f).get();
+                    cache.getCache().put(name, new SkinsCache.SkinCache(hash, skin));
                     SkinManager.addSkin(name, skin);
-                });
+                    System.out.println("New skin upload generated ! " + name);
+                }
                 pngCount++;
             } catch (Exception e) {
                 SkinLib.log("§4Problem with file " + fileName + " !");
                 e.printStackTrace();
             }
         }
-        try (FileWriter writer = new FileWriter(cacheFile)){
+        try (FileWriter writer = new FileWriter(cacheFile)) {
             writer.write(new Gson().toJson(cache));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        SkinLib.log("Cache size: " + cache.getCache().size());
         SkinLib.log(pngCount + " skins has been registred !");
     }
 
