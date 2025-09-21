@@ -56,6 +56,11 @@ public class SkinLibCommand implements CommandExecutor {
                     p.sendMessage("Give " + inputSkinId + " !");
                     break;
                 case "reload":
+                    if (SkinLibConfig.isLoading()) {
+                        sender.sendMessage("§cCurrently reloading SkinLib...");
+                        return false;
+                    }
+                    sender.sendMessage("Reloading...");
                     CompletableFuture.runAsync(SkinLibConfig::load);
                     break;
             }
@@ -68,10 +73,13 @@ public class SkinLibCommand implements CommandExecutor {
 
     public void sendHelp(CommandSender sender) {
         sender.sendMessage(
-                "§7SkinLib",
+                "§7SkinLib, if you see error while reloading, try reloading multiple times",
+                "§f/skinlib reload §7reload the skin system",
                 "§f/skinlib list §7show the skin registred",
+                "§f/skinlib give §7give the player head of the skin"
+                /*,
                 "§f/skinlib addPlayer <PlayerName> §7add skin from player",
-                "§f/skinlib addUrl <URL> §7add skin from image url"
+                "§f/skinlib addUrl <URL> §7add skin from image url"*/
         );
     }
 

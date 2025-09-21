@@ -2,6 +2,7 @@ package fr.supermax_8.skinlib;
 
 import fr.supermax_8.skinlib.commands.SkinLibCommand;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +25,12 @@ public final class SkinLib extends JavaPlugin {
 
 
     public static void log(String s) {
-        System.out.println(s);
+        String s1 = "§8[§e§lSkinLib§8] §7" + s;
+        Bukkit.getConsoleSender().sendMessage(s1);
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (player.hasPermission("skinlib"))
+                player.sendMessage(s1);
+        });
     }
 
 }
