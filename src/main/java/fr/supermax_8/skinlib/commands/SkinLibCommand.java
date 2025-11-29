@@ -31,7 +31,7 @@ public class SkinLibCommand implements CommandExecutor {
                 case "out":
                     String inputSkin = args[1];
                     System.out.println(inputSkin + ":");
-                    System.out.println(SkinManager.getSkins().get(inputSkin).data.texture.url);
+                    System.out.println(SkinManager.getSkins().get(inputSkin).texture().url().skin());
                     break;
                 case "giveurl":
                     if (!(sender instanceof Player)) {
@@ -61,7 +61,13 @@ public class SkinLibCommand implements CommandExecutor {
                         return false;
                     }
                     sender.sendMessage("Reloading...");
-                    CompletableFuture.runAsync(SkinLibConfig::load);
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            SkinLibConfig.load();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                     break;
             }
         } catch (Exception e) {

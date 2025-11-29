@@ -15,7 +15,13 @@ public final class SkinLib extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        CompletableFuture.runAsync(SkinLibConfig::load);
+        CompletableFuture.runAsync(() -> {
+            try {
+                SkinLibConfig.load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         getCommand("skinlib").setExecutor(new SkinLibCommand());
     }
 
