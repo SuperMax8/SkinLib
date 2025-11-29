@@ -30,7 +30,7 @@ public class SkinLibAPI {
         return createHead(SkinManager.getSkins().get(skinId), displayName, lore);
     }
 
-    public static ItemStack createHead(Skin skin, String displayName, String... lore) {
+    public static ItemStack createHead(SkinCache skin, String displayName, String... lore) {
         ItemStack head = itemFromUrl(skin.texture().url().skin());
         ItemMeta headMeta = head.getItemMeta();
         headMeta.setDisplayName(displayName);

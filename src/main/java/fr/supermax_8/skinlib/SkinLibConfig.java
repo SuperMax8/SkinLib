@@ -89,7 +89,7 @@ public class SkinLibConfig {
                             .name(f.getName())
                             .visibility(Visibility.PUBLIC);
                     Skin skin = getMineSkinClient().generate().submitAndWait(request).get().getSkin();
-                    cache.getCache().put(name, new SkinsCache.SkinCache(
+                    SkinCache skinCache = new SkinCache(
                             hash,
                             skin.uuid(),
                             skin.name(),
@@ -97,9 +97,9 @@ public class SkinLibConfig {
                             skin.visibility(),
                             skin.texture(),
                             skin.views(),
-                            skin.duplicate())
-                    );
-                    SkinManager.addSkin(name, skin);
+                            skin.duplicate());
+                    cache.getCache().put(name, skinCache);
+                    SkinManager.addSkin(name, skinCache);
                     saveCache();
                     SkinLib.log("New skin upload generated ! " + name);
                     cacheMiss++;
